@@ -41,6 +41,34 @@ def insert_item(conn, item):
     conn.commit()
 
 
+def delete_item(conn, item_name):
+    """
+    Delete row that matches item_name
+    """
+    sql_command = "DELETE FROM items WHERE name = ?"
+    cursor = conn.cursor()
+    result = cursor.execute(sql_command, (item_name,))
+    conn.commit()
+    if result.rowcount > 0:
+        print("Item was successfully deleted")
+    else:
+        print("No item was deleted")
+
+
+def update_item_quantity(conn, item_name, quantity):
+    """
+    Update quantity to argument when it matches item_name
+    """
+    sql_command = "UPDATE items SET quantity = ? WHERE name = ?"
+    cursor = conn.cursor()
+    result = cursor.execute(sql_command, (quantity, item_name))
+    conn.commit()
+    if result.rowcount > 0:
+        print("Item was successfully updated")
+    else:
+        print("No item was updated")
+
+
 def display(conn):
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM items ORDER BY name")
