@@ -22,12 +22,14 @@ def create_item_tuple():
     """ 
     Takes in user input and returns a tuple of an item
     """
-    user_input = input("Enter item in format (name, quantity): ")
-    item = tuple(user_input.split(','))
-    if len(item) == 2:
-        return item
-    else:
-        print("Too many arguments provided to item")
+    while True:
+        user_input = input("Enter item in format (name, quantity): ")
+        item = tuple(user_input.split(','))
+        item = tuple([value.strip() for value in item])
+        if len(item) == 2:
+            return item
+        else:
+            print("Too many arguments provided to item")
 
 
 def insert_item(conn, item):
@@ -70,6 +72,9 @@ def update_item_quantity(conn, item_name, quantity):
 
 
 def display(conn):
+    """
+    Displays the item stored in the database
+    """
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM items ORDER BY name")
     rows = cursor.fetchall()
@@ -84,6 +89,9 @@ def display(conn):
 
 
 def menu(conn):
+    """
+    Displays a menu with options for the user to choose
+    """
     print("""Please choose the following options:
     1: Add new item to list
     2: Delete item from list
@@ -118,6 +126,7 @@ def main():
     while user_option != 99:
         display(conn)
         user_option = menu(conn)
+    conn.close()
 
 
 if __name__ == "__main__":
