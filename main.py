@@ -56,6 +56,19 @@ def delete_item(conn, item_name):
     else:
         print("No item was deleted")
 
+def delete_all_item(conn):
+    """
+    Deletes all rows from the items table
+    """
+    sql_command = "DELETE FROM items"
+    user_input = input("Type YES if you are sure you want to remove all items: ")
+    if user_input == "YES":
+        cursor = conn.cursor()
+        cursor.execute(sql_command)
+        conn.commit()
+    else:
+        return
+
 
 def update_item_quantity(conn, item_name, quantity):
     """
@@ -96,6 +109,7 @@ def menu(conn):
     1: Add new item to list
     2: Delete item from list
     3: Update item quantity
+    4: Delete all items from list
     99: Exit""")
     user_selection = input("").strip()
     if user_selection == '1':
@@ -110,6 +124,8 @@ def menu(conn):
         print("Update| ", end="")
         update_item_quantity(conn, *create_item_tuple())
         return 3
+    elif user_selection == '4':
+        delete_all_item(conn)
     elif user_selection == '99':
         return 99
     else:
